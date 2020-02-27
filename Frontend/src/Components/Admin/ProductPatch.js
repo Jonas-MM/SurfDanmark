@@ -6,55 +6,47 @@ import ImageUploader from "react-images-upload";
 
 const ProductPatch = (props) => {
   const [product, setProduct] = useState({});
-  const [productName, setProductName] = useState("");
-  const [brand, setBrand] = useState("");
-  const [price, setPrice] = useState("");
-  const [productImage, setProductImage] = useState();
-  
+  const [productImage, setProductImage] = useState({});
   const history = useHistory();
+  
 
   const { productId } = useParams();
-  console.log(productName, brand, price, productImage);
+
+  // console.log(product, productImage);
 
 
   useEffect(() => {
     Axios.get("http://localhost:3004/products/" + props.match.params.product_id).then(res => {
-        setProductName(res.data.productName);
-        setBrand(res.data.brand);
-        setPrice(res.data.price);
-        setProductImage(res.data.coverImage.filename)
+      setProduct(res.data);
+      // setProductImage(res.data.productImage)
       console.log(res);
     });
   }, [props.match.params.product_id]);
 
-//     const fetchData = () => {
-//     Axios.get("http://localhost:3004/products/" + props.match.params.product_id).then(res => {
-//       console.log(res);
-//       setProduct(res.data);
-//     });
-//   };
-
-//   window.onload = function() {
-//     // init();
-//     fetchData();
-//   };
-//   console.log(product);
-
   const handlesubmit = (e) => {
       e.preventDefault();
-      console.log("dsa")
-      Axios.patch("http://localhost:3004/products/" + props.match.params.product_id, {
-            productName,
-            brand,
-            price,
-            productImage
 
-        })
-      .then(alert("Produktet er nu rettet"));
+      const formData = new FormData();
+      formData.append("product", JSON.stringify(product));
+      formData.append('myImage', productImage.file);
+      const config = {
+        headers: {
+            'content-type': 'multipart/form-data'
+        }
+      };
+      console.log(formData);
+
+      Axios.patch("http://localhost:3004/products/" + props.match.params.product_id, formData, config )
+      .then(alert("Produktet er nu rettet"))
+      .catch(error => {
+        console.log(error);
+    }) 
 
   };
   
-
+  const onChange = e => {
+    setProductImage({file:e.target.files[0]});
+}
   return (
     <div>
       <h1>ret produkt</h1>
@@ -64,8 +56,8 @@ const ProductPatch = (props) => {
             <div className="form-group">
               <input
                 name="productName"
-                value={productName}
-                onChange={e => setProductName( e.target.value )}
+                value={product.productName || ''}
+                onChange={e => setProduct({ ...product, productName: e.target.value })}
                 type="text"
                 rows="3"
                 className="form-control"
@@ -76,8 +68,8 @@ const ProductPatch = (props) => {
             <div className="form-group">
               <input
                 name="brand"
-                value={brand}
-                onChange={e => setBrand(e.target.value)}
+                value={product.brand || ''}
+                onChange={e => setProduct({ ...product, brand: e.target.value })}
                 type="text"
                 rows="3"
                 className="form-control"
@@ -88,16 +80,17 @@ const ProductPatch = (props) => {
             <div className="form-group">
               <input
                 name="price"
-                value={price}
-                onChange={e => setPrice( e.target.value )}
+                value={product.price || ''}
+                onChange={e => setProduct({ ...product, price: e.target.value })}
                 type="text"
                 rows="3"
                 className="form-control"
                 placeholder="Produktets pris"
               />
             </div>
+            <input type="file" name="myImage" onChange= {onChange} />
 
-            <ImageUploader
+            {/* <ImageUploader
               withIcon={true}
               buttonText="vælg et billede"
               defaultValue={productImage}
@@ -107,7 +100,7 @@ const ProductPatch = (props) => {
               imgExtention={[".jpg", ".gif", ".png"]}
               maxFileSize={5242880}
               withPreview={true}
-            />
+            /> */}
 
             <button
               type="button"

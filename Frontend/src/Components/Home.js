@@ -21,7 +21,7 @@ const Home = props => {
 
           <img className="img-fluid"
               src={
-                "http://localhost:3004/images/" + product.coverImage.filename
+                "http://localhost:3004/images/" + product.productImage.filename
               }
               alt=""
             />

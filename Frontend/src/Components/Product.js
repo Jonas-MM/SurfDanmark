@@ -29,7 +29,7 @@ function Product(props) {
         <p>{product.brand}</p>
         <p>{product.price}</p>
         <img
-          src={"http://localhost:3004/images/" + product.coverImage.filename}
+          src={"http://localhost:3004/images/" + product.productImage.filename}
           alt=""
         />
       </div>

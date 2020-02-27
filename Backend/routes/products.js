@@ -4,7 +4,9 @@ const Product = require("../models/product");
 
 
 //Multer - required for images
+const path = require("path");
 const multer = require("multer");
+
 
 const upload = multer({
   storage: multer.diskStorage({
@@ -16,6 +18,45 @@ const upload = multer({
     }
   })
 });
+
+
+router.post("/", upload.single("myImage"), async (req, res) => {
+  try {
+    let i = JSON.parse(req.body.product);
+
+    const postedProduct = new Product({
+      productName: i.productName,
+      brand: i.brand,
+      price: i.price,
+      productImage: { filename: req.file.filename } // anden sti fordi der er et andet skema
+    });
+
+    const newProduct = await postedProduct.save();
+    res.status(201).json(newProduct);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -49,7 +90,7 @@ router.post("/", upload.single("image"), async (req, res) => {
         productName: i.productName,
         brand: i.brand,
         price: i.price,
-        coverImage: { filename: req.file.filename } // anden sti fordi der er et andet skema
+        productImage: { filename: req.file.filename } // anden sti fordi der er et andet skema
       });
   
       const newProduct = await postedProduct.save();
@@ -63,7 +104,7 @@ router.post("/", upload.single("image"), async (req, res) => {
 
 
   //function for updating One --- PATCH ---
-router.patch("/:id", upload.single("image"), getProduct, async (req, res) => {
+router.patch("/:id", upload.single("myImage"), getProduct, async (req, res) => {
     try {
       let p = JSON.parse(req.body.product);
   
@@ -79,7 +120,7 @@ router.patch("/:id", upload.single("image"), getProduct, async (req, res) => {
   
       //If image is in the request
       if (req.file) {
-        res.product.coverImage = { filename: req.file.filename };
+        res.product.productImage = { filename: req.file.filename };
       }
   
       const updatedProduct = await res.product.save();

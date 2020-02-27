@@ -24,7 +24,7 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: true
     },
-    coverImage: imgSchema
+    productImage: imgSchema
   },
   { timestamps: true }
 );

@@ -32,7 +32,7 @@ const ProductAdmin = () => {
         <div className="col col-lg-3 mb-5" key={product._id}>
           <div className="card">
           <img className="img-fluid"
-            src={"http://localhost:3004/images/" + product.coverImage.filename}
+            src={"http://localhost:3004/images/" + product.productImage.filename}
             alt=""
             />
             {/* <Link to={"/" + quote._id}>

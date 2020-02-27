@@ -7,15 +7,31 @@ import Axios from "axios";
 
 function ProductCreate() {
   const [product, setProduct] = useState({});
-  const [productImage, setProductImage] = useState("{}");
+  const [productImage, setProductImage] = useState({});
   const history = useHistory();
 
-  console.log(product);
+
+
+
+  console.log(product, productImage );
   // Når der klikkes på GEM - kald api'et og send cartoon (fra state) med
+
+
   const handleSubmit = e => {
     e.preventDefault();
 
-    Axios.post("http://localhost:3004/products", product)
+    const formData = new FormData();
+    formData.append("product", JSON.stringify(product));
+    formData.append('myImage', productImage.file);
+    const config = {
+      headers: {
+          'content-type': 'multipart/form-data'
+      }
+    };
+    console.log(formData);
+
+  
+    Axios.post("http://localhost:3004/products", formData, config )
     .then(res => {
         history.push("/");
     })
@@ -23,6 +39,9 @@ function ProductCreate() {
     .catch(error => {
         console.log(error);
     }) 
+
+
+    
 
 
     // createProduct(product, productImage)
@@ -43,6 +62,10 @@ function ProductCreate() {
   //   fetchData();
   // };
 
+  const onChange = e => {
+    setProductImage({file:e.target.files[0]});
+}
+
   return (
     <div className="container">
     <div className="row">
@@ -52,7 +75,7 @@ function ProductCreate() {
           <div className="form-group">
             <input
               name="productName"
-              value={product.productName}
+              value={product.productName || ''}
               onChange={e => setProduct({ ...product, productName: e.target.value })}
               type="text"
               rows="3"
@@ -64,7 +87,7 @@ function ProductCreate() {
           <div className="form-group">
             <input
               name="brand"
-              value={product.brand}
+              value={product.brand || ''}
               onChange={e => setProduct({ ...product, brand: e.target.value })}
               type="text"
               rows="3"
@@ -76,7 +99,7 @@ function ProductCreate() {
           <div className="form-group">
             <input
               name="price"
-              value={product.price}
+              value={product.price || ''}
               onChange={e => setProduct({ ...product, price: e.target.value })}
               type="number"
               rows="3"
@@ -85,16 +108,19 @@ function ProductCreate() {
             />
           </div>
 
-          <ImageUploader
+          <input type="file" name="myImage" onChange= {onChange} />
+          {/* <ImageUploader
             withIcon={true}
             buttonText="vælg et billede"
-            onChange={e => setProduct({ ...product, coverImage:{filename: e[0].name} })}
+            onChange={image => {
+              setProductImage(image[0]);
+            }}
              //send kun et billede
             imgExtention={[".jpg", ".gif", ".png"]}
             maxFileSize={5242880}
             type="file"
             withPreview={true}
-          />
+          /> */}
 
           <button
             type="button"
