@@ -1,0 +1,18 @@
+GET http://localhost:3004/products
+
+
+###
+
+
+POST http://localhost:3004/products
+Content-Type: application/json
+
+{
+    "productName": "Ski",
+    "brand": "Nike",
+    "price": 295
+}
+
+
+###
+
