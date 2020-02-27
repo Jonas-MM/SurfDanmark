@@ -6,28 +6,28 @@ import ImageUploader from "react-images-upload";
 import Axios from "axios";
 
 function ProductCreate() {
-  const [product, setProduct] = useState("");
+  const [product, setProduct] = useState({});
   const [productImage, setProductImage] = useState("{}");
   const history = useHistory();
 
-  console.log(product, productImage);
+  console.log(product);
   // Når der klikkes på GEM - kald api'et og send cartoon (fra state) med
   const handleSubmit = e => {
     e.preventDefault();
 
-    // Axios.post("http://localhost:3004/products", product)
-    // .then(res => {
-    //     history.push("/");
-    // })
-    // .then(alert("Dit produkt er nu gemt"))
-    // .catch(error => {
-    //     console.log(error);
-    // }) 
+    Axios.post("http://localhost:3004/products", product)
+    .then(res => {
+        history.push("/");
+    })
+    .then(alert("Dit produkt er nu gemt"))
+    .catch(error => {
+        console.log(error);
+    }) 
 
 
-    createProduct(product, productImage)
-      .then(alert("Dit produkt er gemt"))
-      .then(history.push("/"));
+    // createProduct(product, productImage)
+    //   .then(alert("Dit produkt er gemt"))
+    //   .then(history.push("/"));
     // console.log(product);
   };
 
@@ -44,6 +44,7 @@ function ProductCreate() {
   // };
 
   return (
+    <div className="container">
     <div className="row">
       <div className="col">
         <h5 className="my-4">Opret et produkt</h5>
@@ -68,7 +69,7 @@ function ProductCreate() {
               type="text"
               rows="3"
               className="form-control"
-              placeholder="skaber her"
+              placeholder="brand"
             />
           </div>
 
@@ -80,18 +81,18 @@ function ProductCreate() {
               type="number"
               rows="3"
               className="form-control"
-              placeholder="skaber her"
+              placeholder="pris"
             />
           </div>
 
           <ImageUploader
             withIcon={true}
             buttonText="vælg et billede"
-            onChange={image => {
-                setProductImage(image[0]);
-            }} //send kun et billede
+            onChange={e => setProduct({ ...product, coverImage:{filename: e[0].name} })}
+             //send kun et billede
             imgExtention={[".jpg", ".gif", ".png"]}
             maxFileSize={5242880}
+            type="file"
             withPreview={true}
           />
 
@@ -105,11 +106,13 @@ function ProductCreate() {
             Fortryd{" "}
           </button>
           <button type="submit" className="btn btn-primary">
-            Gem cartoon
+            Gem produkt
           </button>
         </form>
       </div>
     </div>
+    </div>
+
   );
 }
 export default ProductCreate;

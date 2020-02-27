@@ -24,17 +24,9 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: true
     },
-    costPrice: {
-      type: Number,
-      required: false
-    },
-    manufacture: {
-      type: String,
-      required: false
-    },
     coverImage: imgSchema
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Product", productSchema, "cartooncol");
+module.exports = mongoose.model("Product", productSchema, "productcol");

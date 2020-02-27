@@ -12,7 +12,7 @@ const upload = multer({
       cd(null, "public/images/");
     },
     filename: function(req, file, cd) {
-      cd(null, Date.now() + "-" + file.originalname);
+      cd(null, file.originalname);
     }
   })
 });

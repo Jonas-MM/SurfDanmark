@@ -4,17 +4,20 @@ import { Link, NavLink, withRouter } from "react-router-dom";
 
 const Navbar = props => {
   return (
-    <nav>
-      <div>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
+    <nav className="navbar navbar-expand-lg navbar-light bg-light mb-5">
+      <div className="d-flex">
+        <ul class="navbar-nav d-flex">
+          <li class="nav-item active">
+            <Link to="/" className="nav-link">Home</Link>
           </li>
-          <li>
-            <NavLink to="/productadmin">Admin</NavLink>
+          <li class="nav-item">
+            <NavLink to="/productadmin" className="nav-link">Admin</NavLink>
           </li>
-          <li>
-            <NavLink to="/productcreate">Opret Produkt</NavLink>
+          <li class="nav-item">
+            <NavLink to="/productcreate" className="nav-link">Opret Produkt</NavLink>
+          </li>
+          <li class="nav-item">
+            <NavLink to="/weather" className="nav-link">Tjek vejret</NavLink>
           </li>
         </ul>
       </div>
