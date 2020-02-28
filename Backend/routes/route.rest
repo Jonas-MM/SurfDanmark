@@ -16,3 +16,4 @@ Content-Type: application/json
 
 ###
 
+DELETE http://localhost:3004/products/5e583debbee7fc4cac175f5f

@@ -91,12 +91,12 @@ const ProductPatch = (props) => {
             <input type="file" name="myImage" onChange= {onChange} />
 
             {/* <ImageUploader
+              type="file"
+              name="myImage" 
               withIcon={true}
               buttonText="vælg et billede"
               defaultValue={productImage}
-              onChange={image => {
-                setProductImage(image);
-              }} //send kun et billede
+              onChange={onChange}
               imgExtention={[".jpg", ".gif", ".png"]}
               maxFileSize={5242880}
               withPreview={true}
